@@ -5,7 +5,7 @@
       :name="transitionName"
       mode="out-in"
       v-on:after-enter="routeSwitch"
-      :duration="{ enter: 0, leave: 250 }"
+      :duration="{ enter: 0, leave: 300 }"
     >
       <router-view :key="$route.fullPath"/>
     </transition>
@@ -15,6 +15,7 @@
 <script>
 import { mapActions } from 'vuex'
 import Header from '@/components/Header'
+const DEFAULT_TRANSITION = 'fade'
 
 export default {
   components: {
@@ -25,6 +26,18 @@ export default {
       isHome: null,
       transitionName: 'fade'
     }
+  },
+  created() {
+    this.$router.beforeEach((to, from, next) => {
+      let transitionName = to.meta.transitionName || from.meta.transitionName;
+      if (transitionName === 'slide') {
+        const toOrder = to.meta.order;
+        const fromOrder = from.meta.order;
+        transitionName = from.meta.order > to.meta.order ? 'slide-left' : 'slide-right';
+      }
+      this.transitionName = transitionName || DEFAULT_TRANSITION;
+      next();
+    });
   },
   methods: {
     routeSwitch () {

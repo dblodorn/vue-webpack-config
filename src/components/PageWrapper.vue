@@ -7,7 +7,7 @@
     <transition
       :name="'fade'"
       mode="out-in"
-      :duration="{ enter: 250, leave: 250 }"
+      :duration="{ enter: 0, leave: 0 }"
     >
       <main v-if="siteLoaded">
         <slot></slot>
@@ -29,9 +29,14 @@ const props = {
 
 const AppWrapper = styled('main', props)`
   width: 100%;
-  display: block;
-  min-height: ${props => props.height}px;
-  background-color: ${props => props.bgColor || colors.white};
+  height: ${props => props.height}px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 350ms cubic-bezier(.19,.48,.27,.99);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   main {
     width: 100%;
     transition: opacity 350ms ease-in-out;

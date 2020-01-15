@@ -1,5 +1,5 @@
 <template>
-  <HeaderWrapper>
+  <HeaderWrapper :class="{'slideInDown animated show' : siteLoaded}">
     <nav> 
       <router-link to="/">Home</router-link>
       <router-link to="/page">Page</router-link>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import styled from 'vue-styled-components'
 
 const HeaderWrapper = styled.main`
@@ -20,6 +21,10 @@ const HeaderWrapper = styled.main`
   justify-content: cener;
   background-color: white;
   z-index: 100;
+  visibility: hidden;
+  &.show {
+    visibility: visible;
+  }
   nav {
     width: 100%;
     text-align: center;
@@ -30,6 +35,9 @@ const HeaderWrapper = styled.main`
 export default {
   components: {
     HeaderWrapper
-  }
+  },
+  computed: mapState([
+    'siteLoaded'
+  ])
 }
 </script>
